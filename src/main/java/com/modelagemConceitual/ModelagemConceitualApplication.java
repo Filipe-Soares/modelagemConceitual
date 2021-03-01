@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.modelagemConceitual.domain.Categoria;
 import com.modelagemConceitual.domain.Cidade;
+import com.modelagemConceitual.domain.Cliente;
+import com.modelagemConceitual.domain.Endereco;
 import com.modelagemConceitual.domain.Estado;
 import com.modelagemConceitual.domain.Produto;
+import com.modelagemConceitual.domain.enums.TipoCliente;
 import com.modelagemConceitual.repositories.CategoriaRepository;
 import com.modelagemConceitual.repositories.CidadeRepository;
+import com.modelagemConceitual.repositories.ClienteRepository;
+import com.modelagemConceitual.repositories.EnderecoRepository;
 import com.modelagemConceitual.repositories.EstadoRepository;
 import com.modelagemConceitual.repositories.ProdutoRepository;
 
@@ -30,6 +35,12 @@ public class ModelagemConceitualApplication implements CommandLineRunner{
 	
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ModelagemConceitualApplication.class, args);
@@ -66,6 +77,19 @@ public class ModelagemConceitualApplication implements CommandLineRunner{
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
 		estadoRepository.saveAll(Arrays.asList(est1,est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
+		
+		Cliente cli1 = new Cliente (null, "Maria Silva", "maria@gmail.com","363778912377", TipoCliente.PESSOAFISICA);
+		
+		cli1.getTelefones().addAll(Arrays.asList("27363323","93838393"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardin", "38220834",cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012",cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+		
 	}
 
 }
